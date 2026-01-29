@@ -55,7 +55,7 @@
     </div>
 
     {{-- ==================== PRODUCT GRID ==================== --}}
-    <div class="p-3 pb-36 space-y-6 bg-gray-50/50">
+    <div class="p-3 pb-44 space-y-6 bg-gray-50/50">
         @foreach($categories as $category)
             @if($category->products->isNotEmpty())
                 <div id="category-{{ $category->id }}" class="scroll-mt-32">
@@ -69,7 +69,7 @@
                     <div class="grid grid-cols-2 gap-3">
                         @foreach($category->products as $product)
                             <div
-                                class="group bg-white rounded-3xl p-2.5 shadow-[0_4px_20px_-2px_rgba(0,0,0,0.05)] border border-gray-100 flex flex-col h-full relative overflow-hidden active:scale-[0.98] transition-all duration-200"
+                                class="group bg-white rounded-3xl p-2.5 shadow-md hover:shadow-lg border border-gray-100/80 flex flex-col h-full relative overflow-hidden active:scale-[0.97] transition-all duration-200"
                                 wire:key="product-{{ $product->id }}"
                             >
                                 {{-- Image Container --}}
@@ -82,14 +82,28 @@
                                             class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
                                         >
                                     @else
-                                        {{-- Inline SVG Food Placeholder --}}
-                                        <div class="w-full h-full flex items-center justify-center bg-green-50">
-                                            <svg class="w-16 h-16 text-green-300" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <circle cx="32" cy="38" rx="22" ry="8" fill="currentColor" opacity="0.3"/>
-                                                <ellipse cx="32" cy="36" rx="22" ry="6" stroke="currentColor" stroke-width="2" fill="none"/>
-                                                <path d="M10 36c0-12 8-22 22-22s22 10 22 22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
-                                                <path d="M32 14v-4M32 10c0-2 1-4 3-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
-                                                <path d="M10 36v4c0 3.3 9.8 6 22 6s22-2.7 22-6v-4" stroke="currentColor" stroke-width="2" fill="none"/>
+                                        {{-- Premium Food Placeholder --}}
+                                        <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-emerald-50 via-green-50 to-amber-50 relative overflow-hidden">
+                                            {{-- Decorative pattern --}}
+                                            <div class="absolute inset-0 opacity-[0.07]" style="background-image: radial-gradient(circle at 2px 2px, #15803d 1px, transparent 0); background-size: 16px 16px;"></div>
+                                            {{-- Bowl with steam SVG --}}
+                                            <svg class="w-16 h-16 relative" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                {{-- Steam lines --}}
+                                                <path d="M30 28c0-3 2-5 0-8s2-5 0-8" stroke="#86efac" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.7"/>
+                                                <path d="M40 26c0-3 2-5 0-8s2-5 0-8" stroke="#86efac" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.5"/>
+                                                <path d="M50 28c0-3 2-5 0-8s2-5 0-8" stroke="#86efac" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.7"/>
+                                                {{-- Bowl body --}}
+                                                <ellipse cx="40" cy="44" rx="24" ry="8" fill="#bbf7d0" opacity="0.6"/>
+                                                <path d="M16 44c2 10 12 16 24 16s22-6 24-16" fill="#86efac" opacity="0.5"/>
+                                                <path d="M16 44c2 10 12 16 24 16s22-6 24-16" stroke="#22c55e" stroke-width="2" fill="none"/>
+                                                {{-- Bowl rim --}}
+                                                <ellipse cx="40" cy="44" rx="24" ry="8" stroke="#22c55e" stroke-width="2" fill="none"/>
+                                                {{-- Food items in bowl --}}
+                                                <circle cx="33" cy="41" r="3" fill="#f59e0b" opacity="0.6"/>
+                                                <circle cx="42" cy="39" r="2.5" fill="#ef4444" opacity="0.5"/>
+                                                <circle cx="48" cy="42" r="2" fill="#22c55e" opacity="0.6"/>
+                                                {{-- Base --}}
+                                                <ellipse cx="40" cy="60" rx="10" ry="2" fill="#22c55e" opacity="0.2"/>
                                             </svg>
                                         </div>
                                     @endif
@@ -202,13 +216,19 @@
                                         class="w-full h-full object-cover"
                                     >
                                 @else
-                                    <div class="w-full h-full flex items-center justify-center bg-green-50">
-                                        <svg class="w-8 h-8 text-green-300" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <circle cx="32" cy="38" rx="22" ry="8" fill="currentColor" opacity="0.3"/>
-                                            <ellipse cx="32" cy="36" rx="22" ry="6" stroke="currentColor" stroke-width="2" fill="none"/>
-                                            <path d="M10 36c0-12 8-22 22-22s22 10 22 22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
-                                            <path d="M32 14v-4M32 10c0-2 1-4 3-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
-                                            <path d="M10 36v4c0 3.3 9.8 6 22 6s22-2.7 22-6v-4" stroke="currentColor" stroke-width="2" fill="none"/>
+                                    <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-emerald-50 to-amber-50 relative">
+                                        <div class="absolute inset-0 opacity-[0.06]" style="background-image: radial-gradient(circle at 2px 2px, #15803d 1px, transparent 0); background-size: 12px 12px;"></div>
+                                        <svg class="w-10 h-10 relative" viewBox="0 0 80 80" fill="none">
+                                            <path d="M30 28c0-3 2-5 0-8s2-5 0-8" stroke="#86efac" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.6"/>
+                                            <path d="M40 26c0-3 2-5 0-8s2-5 0-8" stroke="#86efac" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.4"/>
+                                            <path d="M50 28c0-3 2-5 0-8s2-5 0-8" stroke="#86efac" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.6"/>
+                                            <ellipse cx="40" cy="44" rx="24" ry="8" fill="#bbf7d0" opacity="0.6"/>
+                                            <path d="M16 44c2 10 12 16 24 16s22-6 24-16" fill="#86efac" opacity="0.5"/>
+                                            <path d="M16 44c2 10 12 16 24 16s22-6 24-16" stroke="#22c55e" stroke-width="2" fill="none"/>
+                                            <ellipse cx="40" cy="44" rx="24" ry="8" stroke="#22c55e" stroke-width="2" fill="none"/>
+                                            <circle cx="33" cy="41" r="3" fill="#f59e0b" opacity="0.6"/>
+                                            <circle cx="42" cy="39" r="2.5" fill="#ef4444" opacity="0.5"/>
+                                            <circle cx="48" cy="42" r="2" fill="#22c55e" opacity="0.6"/>
                                         </svg>
                                     </div>
                                 @endif
