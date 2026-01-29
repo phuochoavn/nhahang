@@ -1,0 +1,70 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    image: nhahang-app
+    container_name: nhahang_app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./src:/var/www/html
+    networks:
+      - traefik-public
+      - internal
+
+  reverb:
+    image: nhahang-app
+    container_name: nhahang_reverb
+    restart: unless-stopped
+    working_dir: /var/www/html
+    command: php artisan reverb:start --host="0.0.0.0" --port=8080
+    volumes:
+      - ./src:/var/www/html
+    networks:
+      - traefik-public
+      - internal
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nhahang-reverb.rule=Host(`nhahang.hoadigital.com`) && PathPrefix(`/app`, `/ws`, `/apps`)"
+      - "traefik.http.routers.nhahang-reverb.entrypoints=websecure"
+      - "traefik.http.routers.nhahang-reverb.tls.certresolver=myresolver"
+      - "traefik.http.services.nhahang-reverb.loadbalancer.server.port=8080"
+
+  worker:
+    image: nhahang-app
+    container_name: nhahang_worker
+    restart: unless-stopped
+    working_dir: /var/www/html
+    command: php artisan queue:work --tries=3
+    volumes:
+      - ./src:/var/www/html
+    networks:
+      - internal
+    depends_on:
+      - app
+
+  web:
+    image: nginx:alpine
+    container_name: nhahang_web
+    restart: unless-stopped
+    volumes:
+      - ./src:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - traefik-public
+      - internal
+    depends_on:
+      - app
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nhahang.rule=Host(`nhahang.hoadigital.com`)"
+      - "traefik.http.routers.nhahang.entrypoints=websecure"
+      - "traefik.http.routers.nhahang.tls.certresolver=myresolver"
+      - "traefik.http.services.nhahang.loadbalancer.server.port=80"
+
+networks:
+  traefik-public:
+    external: true
+  internal:
+    external: true
